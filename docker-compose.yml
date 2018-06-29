@@ -70,11 +70,23 @@ services:
         hostname: kafka3
         container_name: kafka3
         depends_on:
-            - kafka-1
+            - kafka-2
         environment:
             KAFKA_BROKER_ID: 3
             KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9093
         ports:
            - "9093:9093"
+
+    schema_registry:
+        image: confluentinc/cp-schema-registry
+        hostname: schema_registry
+        depends_on:
+            - kafka-3
+        ports:
+            - "8081:8081"
+        environment:
+            SCHEMA_REGISTRY_HOST_NAME: schema_registry
+            SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper1:2181'
+
 
