@@ -12,9 +12,6 @@ services:
             ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
         ports:
             - "2181:2181"
-        extra_hosts:
-            - "moby:127.0.0.1"
-            - "localhost: 127.0.0.1"
 
     zookeeper-2:
         image: confluentinc/cp-zookeeper:latest
@@ -27,9 +24,6 @@ services:
             ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
         ports:
             - "2182:2182"
-        extra_hosts:
-            - "moby:127.0.0.1"
-            - "localhost: 127.0.0.1"
 
     zookeeper-3:
         image: confluentinc/cp-zookeeper:latest
@@ -42,9 +36,6 @@ services:
             ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
         ports:
             - "2183:2183"
-        extra_hosts:
-            - "moby:127.0.0.1"
-            - "localhost: 127.0.0.1"
 
     kafka-1:
         image: confluentinc/cp-kafka:latest
@@ -58,13 +49,8 @@ services:
             KAFKA_BROKER_ID: 1
             KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9091
-            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
         ports:
            - "9091:9091"
-        extra_hosts:
-            - "moby:127.0.0.1"
-            - "localhost: 127.0.0.1"
 
     kafka-2:
         image: confluentinc/cp-kafka:latest
@@ -78,9 +64,6 @@ services:
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092
         ports:
            - "9092:9092"
-        extra_hosts:
-            - "moby:127.0.0.1"
-            - "localhost: 127.0.0.1"
 
     kafka-3:
         image: confluentinc/cp-kafka:latest
@@ -94,7 +77,4 @@ services:
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9093
         ports:
            - "9093:9093"
-        extra_hosts:
-            - "moby:127.0.0.1"
-            - "localhost: 127.0.0.1"
 
