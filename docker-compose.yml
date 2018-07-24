@@ -12,6 +12,9 @@ services:
             ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
         ports:
             - "2181:2181"
+        volumes:
+            - "$PWD/data/zk1/data:/var/lib/zookeeper/data"
+            - "$PWD/data/zk1/tx-logs:/var/lib/zookeeper/log"
 
     zookeeper-2:
         image: confluentinc/cp-zookeeper:latest
@@ -24,6 +27,9 @@ services:
             ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
         ports:
             - "2182:2182"
+        volumes:
+            - "$PWD/data/zk2/data:/var/lib/zookeeper/data"
+            - "$PWD/data/zk2/tx-logs:/var/lib/zookeeper/log"
 
     zookeeper-3:
         image: confluentinc/cp-zookeeper:latest
@@ -36,6 +42,9 @@ services:
             ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
         ports:
             - "2183:2183"
+        volumes:
+            - "$PWD/data/zk3/data:/var/lib/zookeeper/data"
+            - "$PWD/data/zk3/tx-logs:/var/lib/zookeeper/log"
 
     kafka-1:
         image: confluentinc/cp-kafka:latest
@@ -54,6 +63,8 @@ services:
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
         ports:
            - "9091:9091"
+        volumes:
+            - "$PWD/data/kafka1:/var/lib/kafka/data"
 
     kafka-2:
         image: confluentinc/cp-kafka:latest
@@ -70,6 +81,8 @@ services:
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
         ports:
            - "9092:9092"
+        volumes:
+            - "$PWD/data/kafka2:/var/lib/kafka/data"
 
     kafka-3:
         image: confluentinc/cp-kafka:latest
@@ -86,6 +99,8 @@ services:
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
         ports:
            - "9093:9093"
+        volumes:
+            - "$PWD/data/kafka3:/var/lib/kafka/data"
 
     schema_registry:
         image: confluentinc/cp-schema-registry
