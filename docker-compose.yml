@@ -61,8 +61,11 @@ services:
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9091,INTERNAL://kafka1:19091
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            # KAFKA_JMX_PORT: 9999
+            # KAFKA_JMX_HOSTNAME: localhost
         ports:
            - "9091:9091"
+            # - "9999:9999"
         volumes:
             - "$PWD/data/kafka1:/var/lib/kafka/data"
 
