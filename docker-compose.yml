@@ -9,12 +9,12 @@ services:
             ZOOKEEPER_SERVER_ID: 1
             ZOOKEEPER_CLIENT_PORT: "2181"
             ZOOKEEPER_TICK_TIME: "2000"
-            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
+            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper5:2888:3888
         ports:
             - "2181:2181"
         volumes:
-            - "$PWD/data/zk1/data:/var/lib/zookeeper/data"
-            - "$PWD/data/zk1/tx-logs:/var/lib/zookeeper/log"
+            - "$PWD/data/zk1/data:/var/lib/zookeeper/data:delegated"
+            - "$PWD/data/zk1/tx-logs:/var/lib/zookeeper/log:delegated"
 
     zookeeper-2:
         image: confluentinc/cp-zookeeper:latest
@@ -24,12 +24,12 @@ services:
             ZOOKEEPER_SERVER_ID: 2
             ZOOKEEPER_CLIENT_PORT: "2182"
             ZOOKEEPER_TICK_TIME: "2000"
-            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
+            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper5:2888:3888
         ports:
             - "2182:2182"
         volumes:
-            - "$PWD/data/zk2/data:/var/lib/zookeeper/data"
-            - "$PWD/data/zk2/tx-logs:/var/lib/zookeeper/log"
+            - "$PWD/data/zk2/data:/var/lib/zookeeper/data:delegated"
+            - "$PWD/data/zk2/tx-logs:/var/lib/zookeeper/log:delegated"
 
     zookeeper-3:
         image: confluentinc/cp-zookeeper:latest
@@ -39,13 +39,43 @@ services:
             ZOOKEEPER_SERVER_ID: 3
             ZOOKEEPER_CLIENT_PORT: "2183"
             ZOOKEEPER_TICK_TIME: "2000"
-            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
+            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper5:2888:3888
         ports:
             - "2183:2183"
         volumes:
-            - "$PWD/data/zk3/data:/var/lib/zookeeper/data"
-            - "$PWD/data/zk3/tx-logs:/var/lib/zookeeper/log"
+            - "$PWD/data/zk3/data:/var/lib/zookeeper/data:delegated"
+            - "$PWD/data/zk3/tx-logs:/var/lib/zookeeper/log:delegated"
 
+    zookeeper-4:
+        image: confluentinc/cp-zookeeper:latest
+        hostname: zookeeper4
+        container_name: zookeeper4
+        environment:
+            ZOOKEEPER_SERVER_ID: 4
+            ZOOKEEPER_CLIENT_PORT: "2184"
+            ZOOKEEPER_TICK_TIME: "2000"
+            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper6:2888:3888
+        ports:
+            - "2184:2184"
+        volumes:
+            - "$PWD/data/zk4/data:/var/lib/zookeeper/data:delegated"
+            - "$PWD/data/zk4/tx-logs:/var/lib/zookeeper/log:delegated"
+
+    zookeeper-5:
+        image: confluentinc/cp-zookeeper:latest
+        hostname: zookeeper5
+        container_name: zookeeper5
+        environment:
+            ZOOKEEPER_SERVER_ID: 5
+            ZOOKEEPER_CLIENT_PORT: "2185"
+            ZOOKEEPER_TICK_TIME: "2000"
+            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper6:2888:3888
+        ports:
+            - "2185:2185"
+        volumes:
+            - "$PWD/data/zk5/data:/var/lib/zookeeper/data:delegated"
+            - "$PWD/data/zk5/tx-logs:/var/lib/zookeeper/log:delegated"
+ 
     kafka-1:
         image: confluentinc/cp-kafka:latest
         hostname: kafka1
@@ -54,9 +84,11 @@ services:
             - zookeeper-1
             - zookeeper-2
             - zookeeper-3
+            - zookeeper-4
+            - zookeeper-5
         environment:
             KAFKA_BROKER_ID: 1
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181,zookeeper4:2181,zookeeper5:2181
             KAFKA_LISTENERS: INTERNAL://kafka1:19091, PLAINTEXT://kafka1:9091
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9091,INTERNAL://kafka1:19091
@@ -67,7 +99,7 @@ services:
            - "9091:9091"
             # - "9999:9999"
         volumes:
-            - "$PWD/data/kafka1:/var/lib/kafka/data"
+            - "$PWD/data/kafka1:/var/lib/kafka/data:delegated"
 
     kafka-2:
         image: confluentinc/cp-kafka:latest
@@ -77,7 +109,7 @@ services:
             - kafka-1
         environment:
             KAFKA_BROKER_ID: 2
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181,zookeeper4:2181,zookeeper5:2181
             KAFKA_LISTENERS: INTERNAL://kafka2:19092, PLAINTEXT://kafka2:9092
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092,INTERNAL://kafka2:19092
@@ -85,7 +117,7 @@ services:
         ports:
            - "9092:9092"
         volumes:
-            - "$PWD/data/kafka2:/var/lib/kafka/data"
+            - "$PWD/data/kafka2:/var/lib/kafka/data:delegated"
 
     kafka-3:
         image: confluentinc/cp-kafka:latest
@@ -95,7 +127,7 @@ services:
             - kafka-2
         environment:
             KAFKA_BROKER_ID: 3
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181,zookeeper4:2181,zookeeper5:2181
             KAFKA_LISTENERS: INTERNAL://kafka3:19093, PLAINTEXT://kafka3:9093
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9093,INTERNAL://kafka3:19093
@@ -103,7 +135,7 @@ services:
         ports:
            - "9093:9093"
         volumes:
-            - "$PWD/data/kafka3:/var/lib/kafka/data"
+            - "$PWD/data/kafka3:/var/lib/kafka/data:delegated"
 
     kafka-4:
         image: confluentinc/cp-kafka:latest
@@ -113,7 +145,7 @@ services:
             - kafka-3
         environment:
             KAFKA_BROKER_ID: 4
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181,zookeeper4:2181,zookeeper5:2181
             KAFKA_LISTENERS: INTERNAL://kafka4:19094, PLAINTEXT://kafka4:9094
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka4:9094,INTERNAL://kafka4:19094
@@ -121,7 +153,7 @@ services:
         ports:
            - "9094:9094"
         volumes:
-            - "$PWD/data/kafka4:/var/lib/kafka/data"
+            - "$PWD/data/kafka4:/var/lib/kafka/data:delegated"
 
     kafka-5:
         image: confluentinc/cp-kafka:latest
@@ -131,7 +163,7 @@ services:
             - kafka-4
         environment:
             KAFKA_BROKER_ID: 5
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181,zookeeper4:2181,zookeeper5:2181
             KAFKA_LISTENERS: INTERNAL://kafka5:19095, PLAINTEXT://kafka5:9095
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka5:9095,INTERNAL://kafka5:19095
@@ -139,7 +171,7 @@ services:
         ports:
            - "9095:9095"
         volumes:
-            - "$PWD/data/kafka5:/var/lib/kafka/data"
+            - "$PWD/data/kafka5:/var/lib/kafka/data:delegated"
 
     kafka-6:
         image: confluentinc/cp-kafka:latest
@@ -149,7 +181,7 @@ services:
             - kafka-5
         environment:
             KAFKA_BROKER_ID: 6
-            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181,zookeeper4:2181,zookeeper5:2181
             KAFKA_LISTENERS: INTERNAL://kafka6:19096, PLAINTEXT://kafka6:9096
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka6:9096,INTERNAL://kafka6:19096
@@ -157,7 +189,7 @@ services:
         ports:
            - "9096:9096"
         volumes:
-            - "$PWD/data/kafka6:/var/lib/kafka/data"
+            - "$PWD/data/kafka6:/var/lib/kafka/data:delegated"
 
 
     schema_registry:
