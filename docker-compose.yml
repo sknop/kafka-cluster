@@ -196,12 +196,12 @@ services:
         image: confluentinc/cp-schema-registry
         hostname: schema_registry
         depends_on:
-            - kafka-3
+            - kafka-6
         ports:
             - "8081:8081"
         environment:
             SCHEMA_REGISTRY_HOST_NAME: schema_registry
             SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper1:2181'
-            SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:9091,PLAINTEXT://kafka2:9092,PLAINTEXT://kafka3:9093
+            SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:9091,PLAINTEXT://kafka2:9092,PLAINTEXT://kafka3:9093,PLAINTEXT://kafka4:9094,PLAINTEXT://kafka5:9095,PLAINTEXT://kafka6:9096
 
 
