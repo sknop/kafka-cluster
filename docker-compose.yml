@@ -77,7 +77,7 @@ services:
             - "$PWD/data/zk5/tx-logs:/var/lib/zookeeper/log:delegated"
  
     kafka-1:
-        image: sknop/kafka-audible:latest
+        image: confluentinc/cp-kafka:latest
         hostname: kafka1
         container_name: kafka1
         depends_on:
@@ -93,18 +93,16 @@ services:
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9091,INTERNAL://kafka1:19091
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-            KAFKA_LOG4J_LOGGERS: kafka.foo.bar=DEBUG
-            # KAFKA_JMX_PORT: 9999
-            # KAFKA_JMX_HOSTNAME: localhost
+            KAFKA_JMX_PORT: 9991
+            KAFKA_JMX_HOSTNAME: localhost
         ports:
            - "9091:9091"
-            # - "9999:9999"
+           - "9991:9991"
         volumes:
             - "$PWD/data/kafka1/data:/var/lib/kafka/data:delegated"
-            - "$PWD/data/kafka1/logs:/var/log/kafka:delegated"
 
     kafka-2:
-        image: sknop/kafka-audible:latest
+        image: confluentinc/cp-kafka:latest
         hostname: kafka2
         container_name: kafka2
         depends_on:
@@ -116,13 +114,16 @@ services:
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,INTERNAL://kafka2:19092
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_JMX_PORT: 9992
+            KAFKA_JMX_HOSTNAME: localhost
         ports:
            - "9092:9092"
+           - "9992:9992"
         volumes:
             - "$PWD/data/kafka2:/var/lib/kafka/data:delegated"
 
     kafka-3:
-        image: sknop/kafka-audible:latest
+        image: confluentinc/cp-kafka:latest
         hostname: kafka3
         container_name: kafka3
         depends_on:
@@ -134,13 +135,16 @@ services:
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9093,INTERNAL://kafka3:19093
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_JMX_PORT: 9993
+            KAFKA_JMX_HOSTNAME: localhost
         ports:
            - "9093:9093"
+           - "9993:9993"
         volumes:
             - "$PWD/data/kafka3:/var/lib/kafka/data:delegated"
 
     kafka-4:
-        image: sknop/kafka-audible:latest
+        image: confluentinc/cp-kafka:latest
         hostname: kafka4
         container_name: kafka4
         depends_on:
@@ -152,13 +156,16 @@ services:
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9094,INTERNAL://kafka4:19094
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_JMX_PORT: 9994
+            KAFKA_JMX_HOSTNAME: localhost
         ports:
            - "9094:9094"
+           - "9994:9994"
         volumes:
             - "$PWD/data/kafka4:/var/lib/kafka/data:delegated"
 
     kafka-5:
-        image: sknop/kafka-audible:latest
+        image: confluentinc/cp-kafka:latest
         hostname: kafka5
         container_name: kafka5
         depends_on:
@@ -170,13 +177,16 @@ services:
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9095,INTERNAL://kafka5:19095
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_JMX_PORT: 9995
+            KAFKA_JMX_HOSTNAME: localhost
         ports:
            - "9095:9095"
+           - "9995:9995"
         volumes:
             - "$PWD/data/kafka5:/var/lib/kafka/data:delegated"
 
     kafka-6:
-        image: sknop/kafka-audible:latest
+        image: confluentinc/cp-kafka:latest
         hostname: kafka6
         container_name: kafka6
         depends_on:
@@ -188,8 +198,11 @@ services:
             KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9096,INTERNAL://kafka6:19096
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_JMX_PORT: 9996
+            KAFKA_JMX_HOSTNAME: localhost
         ports:
            - "9096:9096"
+           - "9996:9996"
         volumes:
             - "$PWD/data/kafka6:/var/lib/kafka/data:delegated"
 
@@ -204,7 +217,6 @@ services:
             - "8081:8081"
         environment:
             SCHEMA_REGISTRY_HOST_NAME: schema_registry
-            # SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper1:2181'
             SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:19091,PLAINTEXT://kafka2:19092,PLAINTEXT://kafka3:19093,PLAINTEXT://kafka4:19094,PLAINTEXT://kafka5:19095,PLAINTEXT://kafka6:19096
 
 
