@@ -54,7 +54,7 @@ services:
             ZOOKEEPER_SERVER_ID: 4
             ZOOKEEPER_CLIENT_PORT: "2184"
             ZOOKEEPER_TICK_TIME: "2000"
-            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper6:2888:3888
+            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper5:2888:3888
         ports:
             - "2184:2184"
         volumes:
@@ -69,7 +69,7 @@ services:
             ZOOKEEPER_SERVER_ID: 5
             ZOOKEEPER_CLIENT_PORT: "2185"
             ZOOKEEPER_TICK_TIME: "2000"
-            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper6:2888:3888
+            ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888;zookeeper4:2888:3888;zookeeper5:2888:3888
         ports:
             - "2185:2185"
         volumes:
@@ -94,13 +94,24 @@ services:
             KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9091,INTERNAL://kafka1:19091
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
             KAFKA_JMX_PORT: 9991
-            KAFKA_JMX_HOSTNAME: localhost
+            KAFKA_JMX_HOSTNAME: kafka1
         ports:
            - "9091:9091"
            - "9991:9991"
         volumes:
             - "$PWD/data/kafka1/data:/var/lib/kafka/data:delegated"
 
+    jmx-exporter-kafka-1:
+        image: sknop/kafka-prometheus-jmx-exporter
+        container_name: jmx-exporter-kafka-1
+        depends_on:
+            - kafka-1
+        environment:
+            KAFKA_JMXPORT: kafka1:9991
+            JMX_WEBPORT: 5556   
+        ports:
+            - "5556:5556"
+        
     kafka-2:
         image: confluentinc/cp-kafka:latest
         hostname: kafka2
